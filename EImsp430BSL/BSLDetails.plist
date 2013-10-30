@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Name</key>
+		<string>RX data block</string>
+		<key>CMD</key>
+		<data>Eg==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>RX password</string>
+		<key>CMD</key>
+		<data>EA==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Erase Segment</string>
+		<key>CMD</key>
+		<data>Fg==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Mass Erase</string>
+		<key>CMD</key>
+		<data>GA==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Erase Check</string>
+		<key>CMD</key>
+		<data>HA==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Change baud rate</string>
+		<key>CMD</key>
+		<data>IA==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Set mem offset</string>
+		<key>CMD</key>
+		<data>IQ==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Load PC</string>
+		<key>CMD</key>
+		<data>Gg==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>TX data block</string>
+		<key>CMD</key>
+		<data>FA==</data>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>TX BSL version</string>
+		<key>CMD</key>
+		<data>Hg==</data>
+	</dict>
+</array>
+</plist>
