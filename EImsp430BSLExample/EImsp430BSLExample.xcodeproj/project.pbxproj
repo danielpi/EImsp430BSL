@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E685D39718223FD500D3A230 /* ProcessorDetails.plist in Resources */ = {isa = PBXBuildFile; fileRef = E685D39618223FD500D3A230 /* ProcessorDetails.plist */; };
 		E6C8663E181E7BD8009E2A8B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C8663D181E7BD8009E2A8B /* Cocoa.framework */; };
 		E6C86648181E7BD8009E2A8B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6C86646181E7BD8009E2A8B /* InfoPlist.strings */; };
 		E6C8664A181E7BD8009E2A8B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C86649181E7BD8009E2A8B /* main.m */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E685D39618223FD500D3A230 /* ProcessorDetails.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ProcessorDetails.plist; sourceTree = "<group>"; };
 		E6C8663A181E7BD8009E2A8B /* EImsp430BSLExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EImsp430BSLExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6C8663D181E7BD8009E2A8B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E6C86640181E7BD8009E2A8B /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -196,6 +198,7 @@
 		E6C86673181E7C0F009E2A8B /* EImsp430BSL */ = {
 			isa = PBXGroup;
 			children = (
+				E685D39618223FD500D3A230 /* ProcessorDetails.plist */,
 				E6C86693181F8948009E2A8B /* BSLDetails.plist */,
 				E6C86674181E7C0F009E2A8B /* EIbslPacket.h */,
 				E6C86675181E7C0F009E2A8B /* EIbslPacket.m */,
@@ -323,6 +326,7 @@
 				E6C86656181E7BD8009E2A8B /* Images.xcassets in Resources */,
 				E6C86694181F8948009E2A8B /* BSLDetails.plist in Resources */,
 				E6C8664E181E7BD8009E2A8B /* Credits.rtf in Resources */,
+				E685D39718223FD500D3A230 /* ProcessorDetails.plist in Resources */,
 				E6C86654181E7BD8009E2A8B /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -563,6 +567,7 @@
 				E6C8666D181E7BD8009E2A8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E6C8666E181E7BD8009E2A8B /* Build configuration list for PBXNativeTarget "EImsp430BSLExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -571,6 +576,7 @@
 				E6C86670181E7BD8009E2A8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

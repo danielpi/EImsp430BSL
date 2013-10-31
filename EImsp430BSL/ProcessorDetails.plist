@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>ProcessorName</key>
+		<string>msp430</string>
+		<key>DeviceName</key>
+		<string>F161x</string>
+		<key>BSLVersionName</key>
+		<string>1.61</string>
+		<key>ChipIDAddress</key>
+		<data>D/A=</data>
+		<key>ChipIDData</key>
+		<data>8Ww=</data>
+		<key>BSLVersionAddress</key>
+		<data>D/o=</data>
+		<key>BSLVersionData</key>
+		<data>AWE=</data>
+		<key>RAMStartAddress</key>
+		<integer>4352</integer>
+		<key>RAMFinishAddress</key>
+		<integer>14591</integer>
+		<key>CodeMemoryStartAddress</key>
+		<integer>16384</integer>
+		<key>CodeMemoryFinishAddress</key>
+		<integer>65535</integer>
+	</dict>
+	<dict>
+		<key>ProcessorName</key>
+		<string>msp430</string>
+		<key>DeviceName</key>
+		<string>F261x</string>
+		<key>BSLVersionName</key>
+		<string>2.13</string>
+		<key>ChipIDAddress</key>
+		<data>D/A=</data>
+		<key>ChipIDData</key>
+		<data>8m8=</data>
+		<key>BSLVersionAddress</key>
+		<data>D/o=</data>
+		<key>BSLVersionData</key>
+		<data>AhM=</data>
+		<key>RAMStartAddress</key>
+		<integer>4352</integer>
+		<key>RAMFinishAddress</key>
+		<integer>12543</integer>
+		<key>CodeMemoryStartAddress</key>
+		<integer>12544</integer>
+		<key>CodeMemoryFinishAddress</key>
+		<integer>131071</integer>
+	</dict>
+</array>
+</plist>

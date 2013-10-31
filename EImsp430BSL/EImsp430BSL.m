@@ -42,11 +42,10 @@
         _dataFromMicroBuffer = [[NSMutableData alloc] initWithCapacity:16];;
         
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"ProcessorDetails" ofType:@"plist"];
-        _processorDetails = [NSArray arrayWithContentsOfFile:plistPath];
+        _processorDetails = [NSArray arrayWithContentsOfFile:plistPath]; // This fails silently is the file isn't present
         
         //self.state =_idleState;
         self.nextState = _idleState;
-        [self changeState];
         [self changeState];
     }
     
@@ -103,12 +102,6 @@
 
 
 @end
-
-
-
-
-
-
 
 
 
@@ -271,9 +264,7 @@
         [bsl.packetQueue addObject:dataBlock];
         //NSLog(@"%x %@", [[dict objectForKey:@"Address"] intValue], dataBlock);
     }
-        
-    
-    
+
     bsl.programmingStatus = @"programming";
     
     bsl.nextState = bsl.enteringBSLState;
@@ -285,18 +276,11 @@
 @implementation EnteringBSL
 - (void)runOnEntry
 {
-    EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
-    
-    if (![bsl.currentPort isOpen]) {
-        [bsl.currentPort open];
-        // What should happen if this fails?
+    if (![[(EImsp430BSL*)self.machine currentPort] isOpen]) {
+        [[(EImsp430BSL*)self.machine currentPort] open];
     }
     
-    bsl.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                 target:bsl
-                                               selector:@selector(timeIsUp:)
-                                               userInfo:nil
-                                                repeats:NO];
+    [self.machine setTimeOutWithTimeInterval:1.0];
 }
 
 - (void) serialPortDidOpen
@@ -317,23 +301,18 @@
 
 - (void) serialPortDidSendData:(NSData *)data
 {
-    EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
-    
-    bsl.nextState = bsl.syncingState;
-    [bsl changeState];
+    [self.machine setNextState:((EImsp430BSL *)self.machine).syncingState];
+    [self.machine changeState];
 }
 
--(void)timeIsUp:(id)userInfo
+-(void)timeOut
 {
-    EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
-    
-    NSLog(@"Time is up");
     NSLog(@"Can't seem to open the port");
-    bsl.statusMessage = @"Unable to open the Serial Port";
-    bsl.statusCode = @"PortProblem";
+    [(EImsp430BSL*)self.machine setStatusMessage:@"Unable to open the Serial Port"];
+    [(EImsp430BSL*)self.machine setStatusCode:@"PortProblem"];
     
-    bsl.nextState = bsl.idleState;
-    [bsl changeState];
+    [self.machine setNextState:((EImsp430BSL *)self.machine).idleState];
+    [self.machine changeState];
 }
 @end
 
@@ -358,8 +337,8 @@
     if (self.attempts > [bsl.retries intValue]) {
         self.attempts = 0;
         bsl.statusMessage = @"Unable to sync to the msp430";
-        bsl.nextState = bsl.idleState;
-        [bsl changeState];
+        [self.machine setNextState:((EImsp430BSL *)self.machine).idleState];
+        [self.machine changeState];
     } else {
         // Send out the sync byte
         [bsl.currentPort sendData:[[EIbslPacket syncPacket] data]];
@@ -369,11 +348,7 @@
         }
         self.attempts++;
         // Start a timer to check that the return hasn't taken too long
-        bsl.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                     target:bsl
-                                                   selector:@selector(timeIsUp:)
-                                                   userInfo:nil
-                                                    repeats:NO];
+        [self.machine setTimeOutWithTimeInterval:1.0];
     }
 }
 
@@ -414,15 +389,11 @@
     } else {
         //bsl.nextState = bsl.idleState;
         //[bsl changeState];
-        bsl.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                     target:bsl
-                                                   selector:@selector(timeIsUp:)
-                                                   userInfo:nil
-                                                    repeats:NO];
+        [self.machine setTimeOutWithTimeInterval:1.0];
     }
 }
 
--(void)timeIsUp:(id)userInfo
+-(void)timeOut
 {
     EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
     
@@ -433,10 +404,9 @@
         bsl.programmingStatus = @"programmingFailed";
     }
     
-    NSLog(@"Time is up");
     bsl.statusMessage = @"No response from the processor";
-    bsl.nextState = bsl.syncingState;
-    [bsl changeState];
+    [self.machine setNextState:((EImsp430BSL *)self.machine).syncingState];
+    [self.machine changeState];
 }
 
 @end
@@ -462,18 +432,14 @@
         {
             [bsl.delegate didSendPacket:bsl.currentCommand];
         }
-        bsl.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                     target:bsl
-                                                   selector:@selector(timeIsUp:)
-                                                   userInfo:nil
-                                                    repeats:NO];
+        [self.machine setTimeOutWithTimeInterval:1.0];
     } else {
         if ([bsl.programmingStatus isEqualToString:@"programming"]) {
             bsl.programmingStatus = @"programmingSucceeded";
         }
         
-        bsl.nextState = bsl.idleState;
-        [bsl changeState];
+        [self.machine setNextState:((EImsp430BSL *)self.machine).idleState];
+        [self.machine changeState];
     }
     
     bsl.packetsLeft = [bsl.packetQueue count];
@@ -532,15 +498,11 @@
         }
     } else {
         NSLog(@"invalid");
-        bsl.timer = [NSTimer scheduledTimerWithTimeInterval:0.3
-                                                     target:bsl
-                                                   selector:@selector(timeIsUp:)
-                                                   userInfo:nil
-                                                    repeats:NO];
+        [self.machine setTimeOutWithTimeInterval:1.0];
     }
 }
 
--(void)timeIsUp:(id)userInfo
+-(void)timeOut
 {
     EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
     
@@ -551,10 +513,9 @@
         bsl.programmingStatus = @"programmingFailed";
     }
     
-    NSLog(@"Time is up");
     bsl.statusMessage = @"No response from the processor";
-    bsl.nextState = bsl.idleState;
-    [bsl changeState];
+    [self.machine setNextState:((EImsp430BSL *)self.machine).idleState];
+    [self.machine changeState];
 }
 
 -(void)eraseRAM

@@ -74,27 +74,27 @@
 
 
 @interface Idle : BaseState
--(void)pingBSL;
--(void)massErase;
--(void)unlock;
--(void)eraseCheck;
--(void)transmitBSLVersion;
--(void)rxPasswordIfErased;
--(void)blankCheck;
--(void)programMicro;
+- (void) pingBSL;
+- (void) massErase;
+- (void) unlock;
+//-(void) eraseCheck;
+- (void) transmitBSLVersion;
+- (void) rxPasswordIfErased;
+- (void) blankCheck;
+- (void) programMicro;
 @end
 
 @interface EnteringBSL : BaseState
-- (void)serialPortDidOpen;
-- (void)serialPortDidSendData:(NSData *)data;
+- (void) serialPortDidOpen;
+- (void) serialPortDidSendData:(NSData *)data;
 @end
 
 @interface Syncing : BaseState
 @property (readwrite) uint attempts;
-- (void)receivedData:(NSData *)data;
+- (void) receivedData:(NSData *)data;
 @end
 
 @interface RequestResponse : BaseState
-- (void)receivedData:(NSData *)data;
-- (void)eraseRAM;
+- (void) receivedData:(NSData *)data;
+- (void) eraseRAM;
 @end
