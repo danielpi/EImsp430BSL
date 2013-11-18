@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BaseStateMachine.h"
+#import "EIStateMachine.h"
 #import "EISerialPort.h"
 #import "EIbslPacket.h"
 #import "EIFirmwareContainer.h"
@@ -30,7 +30,7 @@
 @class RequestResponse;
 
 
-@interface EImsp430BSL : BaseStateMachine
+@interface EImsp430BSL : EIStateMachine
 
 @property (readwrite, weak) id delegate;
 
@@ -73,7 +73,7 @@
 @end
 
 
-@interface Idle : BaseState
+@interface Idle : EIState <EIStateProtocol>
 - (void) pingBSL;
 - (void) massErase;
 - (void) unlock;
@@ -84,17 +84,17 @@
 - (void) programMicro;
 @end
 
-@interface EnteringBSL : BaseState
+@interface EnteringBSL : EIState <EIStateProtocol>
 - (void) serialPortDidOpen;
 - (void) serialPortDidSendData:(NSData *)data;
 @end
 
-@interface Syncing : BaseState
+@interface Syncing : EIState <EIStateProtocol>
 @property (readwrite) uint attempts;
 - (void) receivedData:(NSData *)data;
 @end
 
-@interface RequestResponse : BaseState
+@interface RequestResponse : EIState <EIStateProtocol>
 - (void) receivedData:(NSData *)data;
 - (void) eraseRAM;
 @end

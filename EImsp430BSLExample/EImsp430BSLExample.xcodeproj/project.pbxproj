@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E618C5A7182A124F009A27C5 /* EIStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = E618C5A6182A124F009A27C5 /* EIStateMachine.m */; };
 		E685D39718223FD500D3A230 /* ProcessorDetails.plist in Resources */ = {isa = PBXBuildFile; fileRef = E685D39618223FD500D3A230 /* ProcessorDetails.plist */; };
 		E6C8663E181E7BD8009E2A8B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C8663D181E7BD8009E2A8B /* Cocoa.framework */; };
 		E6C86648181E7BD8009E2A8B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6C86646181E7BD8009E2A8B /* InfoPlist.strings */; };
@@ -27,7 +28,6 @@
 		E6C86689181E7C18009E2A8B /* EISerialPortManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C86682181E7C17009E2A8B /* EISerialPortManager.m */; };
 		E6C8668A181E7C18009E2A8B /* EISerialPortSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C86684181E7C17009E2A8B /* EISerialPortSelectionController.m */; };
 		E6C8668B181E7C18009E2A8B /* EISerialTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C86687181E7C18009E2A8B /* EISerialTextView.m */; };
-		E6C8668F181E7C21009E2A8B /* BaseStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C8668E181E7C21009E2A8B /* BaseStateMachine.m */; };
 		E6C86692181E7FD9009E2A8B /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C86691181E7FD9009E2A8B /* AppController.m */; };
 		E6C86694181F8948009E2A8B /* BSLDetails.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6C86693181F8948009E2A8B /* BSLDetails.plist */; };
 /* End PBXBuildFile section */
@@ -43,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E618C5A5182A124F009A27C5 /* EIStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EIStateMachine.h; sourceTree = "<group>"; };
+		E618C5A6182A124F009A27C5 /* EIStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EIStateMachine.m; sourceTree = "<group>"; };
 		E685D39618223FD500D3A230 /* ProcessorDetails.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ProcessorDetails.plist; sourceTree = "<group>"; };
 		E6C8663A181E7BD8009E2A8B /* EImsp430BSLExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EImsp430BSLExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6C8663D181E7BD8009E2A8B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -79,8 +81,6 @@
 		E6C86684181E7C17009E2A8B /* EISerialPortSelectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EISerialPortSelectionController.m; sourceTree = "<group>"; };
 		E6C86686181E7C17009E2A8B /* EISerialTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EISerialTextView.h; sourceTree = "<group>"; };
 		E6C86687181E7C18009E2A8B /* EISerialTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EISerialTextView.m; sourceTree = "<group>"; };
-		E6C8668D181E7C21009E2A8B /* BaseStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStateMachine.h; sourceTree = "<group>"; };
-		E6C8668E181E7C21009E2A8B /* BaseStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseStateMachine.m; sourceTree = "<group>"; };
 		E6C86690181E7FD9009E2A8B /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		E6C86691181E7FD9009E2A8B /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		E6C86693181F8948009E2A8B /* BSLDetails.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BSLDetails.plist; sourceTree = "<group>"; };
@@ -108,6 +108,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E618C5A4182A124F009A27C5 /* EIStateMachine */ = {
+			isa = PBXGroup;
+			children = (
+				E618C5A5182A124F009A27C5 /* EIStateMachine.h */,
+				E618C5A6182A124F009A27C5 /* EIStateMachine.m */,
+			);
+			name = EIStateMachine;
+			path = ../../../EIStateMachine/EIStateMachine;
+			sourceTree = "<group>";
+		};
 		E6C86631181E7BD8009E2A8B = {
 			isa = PBXGroup;
 			children = (
@@ -151,7 +161,7 @@
 		E6C86643181E7BD8009E2A8B /* EImsp430BSLExample */ = {
 			isa = PBXGroup;
 			children = (
-				E6C8668C181E7C21009E2A8B /* EIStateMachine */,
+				E618C5A4182A124F009A27C5 /* EIStateMachine */,
 				E6C8667D181E7C17009E2A8B /* EISerialPort */,
 				E6C86673181E7C0F009E2A8B /* EImsp430BSL */,
 				E6C8664F181E7BD8009E2A8B /* AppDelegate.h */,
@@ -234,16 +244,6 @@
 				E6C86687181E7C18009E2A8B /* EISerialTextView.m */,
 			);
 			path = GUI;
-			sourceTree = "<group>";
-		};
-		E6C8668C181E7C21009E2A8B /* EIStateMachine */ = {
-			isa = PBXGroup;
-			children = (
-				E6C8668D181E7C21009E2A8B /* BaseStateMachine.h */,
-				E6C8668E181E7C21009E2A8B /* BaseStateMachine.m */,
-			);
-			name = EIStateMachine;
-			path = ../../../EIStateMachine/EIStateMachine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -351,9 +351,9 @@
 				E6C86651181E7BD8009E2A8B /* AppDelegate.m in Sources */,
 				E6C86689181E7C18009E2A8B /* EISerialPortManager.m in Sources */,
 				E6C8668A181E7C18009E2A8B /* EISerialPortSelectionController.m in Sources */,
-				E6C8668F181E7C21009E2A8B /* BaseStateMachine.m in Sources */,
 				E6C86688181E7C18009E2A8B /* EISerialPort.m in Sources */,
 				E6C8667C181E7C0F009E2A8B /* EImsp430BSL.m in Sources */,
+				E618C5A7182A124F009A27C5 /* EIStateMachine.m in Sources */,
 				E6C8667B181E7C0F009E2A8B /* EIFirmwareContainer.m in Sources */,
 				E6C8664A181E7BD8009E2A8B /* main.m in Sources */,
 				E6C8668B181E7C18009E2A8B /* EISerialTextView.m in Sources */,
