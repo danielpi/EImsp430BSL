@@ -85,16 +85,16 @@
 @end
 
 @interface EnteringBSL : EIState <EIStateProtocol>
-- (void) serialPortDidOpen;
-- (void) serialPortDidSendData:(NSData *)data;
+- (void) serialPortDidOpen:(EISerialPort *)port;
+- (void) serialPort:(EISerialPort *)port didSendData:(NSData *)data;
 @end
 
 @interface Syncing : EIState <EIStateProtocol>
 @property (readwrite) uint attempts;
-- (void) receivedData:(NSData *)data;
+- (void) serialPort:(EISerialPort *)port didReceiveData:(NSData *)data;
 @end
 
 @interface RequestResponse : EIState <EIStateProtocol>
-- (void) receivedData:(NSData *)data;
+- (void) serialPort:(EISerialPort *)port didReceiveData:(NSData *)data;
 - (void) eraseRAM;
 @end

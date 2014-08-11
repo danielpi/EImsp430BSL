@@ -118,7 +118,7 @@
     
     if ([bsl.currentPort isOpen]) {
         [bsl.currentPort setBaudRate:[NSNumber numberWithInt:19200]];
-        [bsl.currentPort setDataBits:EIEightDataBits];
+        [bsl.currentPort setDataBits:EIDataBitsEight];
         [bsl.currentPort setParity:EIParityNone];
         [bsl.currentPort setStopBits:EIStopbitsOne];
         
@@ -267,8 +267,14 @@
 
     bsl.programmingStatus = @"programming";
     
+    //bsl.nextState = bsl.enteringBSLState;
     bsl.nextState = bsl.enteringBSLState;
     [bsl changeState];
+}
+
+- (NSString *) description
+{
+    return @"Idle";
 }
 @end
 
@@ -283,7 +289,7 @@
     [self.machine setTimeOutWithTimeInterval:1.0];
 }
 
-- (void) serialPortDidOpen
+- (void) serialPortDidOpen:(EISerialPort *)port;
 {
     EImsp430BSL* bsl = (EImsp430BSL *)self.machine;
     
@@ -291,7 +297,7 @@
     bsl.statusCode = @"PortOpen";
     
     [bsl.currentPort setBaudRate:[NSNumber numberWithInt:19200]];
-    [bsl.currentPort setDataBits:EIEightDataBits];
+    [bsl.currentPort setDataBits:EIDataBitsEight];
     [bsl.currentPort setParity:EIParityNone];
     [bsl.currentPort setStopBits:EIStopbitsOne];
     
@@ -299,9 +305,11 @@
     [bsl.currentPort delayTransmissionForDuration:0.1];
 }
 
-- (void) serialPortDidSendData:(NSData *)data
+- (void) serialPort:(EISerialPort *)port didSendData:(NSData *)data;
 {
-    [self.machine setNextState:((EImsp430BSL *)self.machine).syncingState];
+    EImsp430BSL *bsl = (EImsp430BSL*)self.machine;
+    NSLog(@"%@ %@", bsl, data);
+    bsl.nextState = bsl.syncingState;
     [self.machine changeState];
 }
 
@@ -314,21 +322,25 @@
     [self.machine setNextState:((EImsp430BSL *)self.machine).idleState];
     [self.machine changeState];
 }
+
+- (NSString *) description
+{
+    return @"EnteringBSL";
+}
 @end
 
 
 
 
 @implementation Syncing
-
--(void) runOnEntry
+- (void)runOnEntry
 {
     EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
     
     if (![[bsl.currentPort baudRate] isEqualToNumber:[NSNumber numberWithInt:9600]]) {
         // Change baud rate
         [bsl.currentPort setBaudRate:[NSNumber numberWithInt:9600]];
-        [bsl.currentPort setDataBits:EIEightDataBits];
+        [bsl.currentPort setDataBits:EIDataBitsEight];
         [bsl.currentPort setParity:EIParityEven];
         [bsl.currentPort setStopBits:EIStopbitsOne];
         [bsl.currentPort delayTransmissionForDuration:0.1];
@@ -352,7 +364,7 @@
     }
 }
 
-- (void) receivedData:(NSData *)data
+- (void) serialPort:(EISerialPort *)port didReceiveData:(NSData *)data;
 {
     EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
     
@@ -409,6 +421,10 @@
     [self.machine changeState];
 }
 
+- (NSString *) description
+{
+    return @"Syncing";
+}
 @end
 
 
@@ -442,12 +458,12 @@
         [self.machine changeState];
     }
     
-    bsl.packetsLeft = [bsl.packetQueue count];
+    bsl.packetsLeft = (int)[bsl.packetQueue count];
     bsl.progressPercentageFloat = (float)(bsl.packetsTotal - bsl.packetsLeft)/(float)bsl.packetsTotal;
     bsl.progressPercentage = [NSNumber numberWithFloat:bsl.progressPercentageFloat*100];
 }
 
-- (void) receivedData:(NSData *)data
+- (void) serialPort:(EISerialPort *)port didReceiveData:(NSData *)data;
 {
     EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
     
@@ -556,10 +572,15 @@
     
     [bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:ramStartAddress forBytes:ramSize]];
     
-    bsl.packetsTotal = [bsl.packetQueue count];
-    bsl.packetsLeft = [bsl.packetQueue count];
+    bsl.packetsTotal = (int)[bsl.packetQueue count];
+    bsl.packetsLeft = (int)[bsl.packetQueue count];
     bsl.progressPercentageFloat = (bsl.packetsTotal - bsl.packetsLeft)/bsl.packetsTotal;
     bsl.progressPercentage = [NSNumber numberWithFloat:bsl.progressPercentageFloat];
 
+}
+
+- (NSString *) description
+{
+    return @"RequestResponse";
 }
 @end
