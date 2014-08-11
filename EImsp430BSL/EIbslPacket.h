@@ -25,11 +25,12 @@
 +(id)eraseCheckFromAddress:(UInt16)address forBytes:(UInt16)numBytes;
 +(id)rxDataBlock:(NSData *)dataBlock FromAddress:(UInt16)address;
 +(id)txDataBlockFromAddress:(UInt16)address forBytes:(UInt16)numBytes;
++(id)setMemoryOffset:(UInt16)offset;
 
 
 -(id)initWithData:(NSData *)data;
 -(id)initWithMassErasePacket;
--(id)initWithAck;
+//-(id)initWithAck;
 
 -(NSData *)commandIdentification;
 -(NSData *)L1;

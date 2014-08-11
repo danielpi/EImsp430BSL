@@ -257,7 +257,13 @@
     // Load the file
     
     //NSLog(@"bsl.programFileDataArray:%@", bsl.programFileDataArray);
+    BOOL intoExtendedMem = NO;
     for (id dict in bsl.programFileDataArray) {
+        if (([[dict objectForKey:@"address"] intValue] > 0xFFFF) && intoExtendedMem == NO) {
+            EIbslPacket *memoryOffsetPacket = [EIbslPacket setMemoryOffset:1];
+            [bsl.packetQueue addObject:memoryOffsetPacket];
+            intoExtendedMem = YES;
+        }
         EIbslPacket *dataBlock = [EIbslPacket rxDataBlock:[dict objectForKey:@"data"]
                                               FromAddress:[[dict objectForKey:@"address"] intValue]];
         NSLog(@"dataBlock:%@",dataBlock);
@@ -267,7 +273,6 @@
 
     bsl.programmingStatus = @"programming";
     
-    //bsl.nextState = bsl.enteringBSLState;
     bsl.nextState = bsl.enteringBSLState;
     [bsl changeState];
 }
@@ -305,7 +310,7 @@
     [bsl.currentPort delayTransmissionForDuration:0.1];
 }
 
-- (void) serialPort:(EISerialPort *)port didSendData:(NSData *)data;
+- (void) serialPort:(EISerialPort *)port didSendData:(NSData *)data
 {
     EImsp430BSL *bsl = (EImsp430BSL*)self.machine;
     NSLog(@"%@ %@", bsl, data);

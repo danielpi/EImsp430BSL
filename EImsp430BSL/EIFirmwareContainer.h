@@ -14,7 +14,7 @@
 
 -(id)init;
 -(id)initWithString:(NSString *)aString;
--(void)addData:(NSData *)newData atAddress:(UInt16)startAddress;
+-(void)addData:(NSData *)newData atAddress:(UInt32)startAddress;
 -(NSEnumerator *)chunkEnumeratorWithNumberOfBytes:(int)numBytes;
 -(NSArray *)arrayOfChunkedFirmwareWithNumberOfBytes:(int)numBytes;
 -(NSArray *)arrayOfChunkedFirmware;

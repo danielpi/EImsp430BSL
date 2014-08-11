@@ -36,6 +36,8 @@
         uint recordType;
         NSData *data;
         uint checksum;
+        uint memOffset = 0;
+        uint offset;
         
         //NSMutableArray *fileData = [[NSMutableArray alloc] initWithCapacity:2000];
         //EIFirmwareContainer *fileContainer = [[EIFirmwareContainer alloc] init];
@@ -76,8 +78,12 @@
                     //[fileData addObject:oneRecord];
                     
                     if (recordType == 0) {
-                        [self addData:data atAddress:address];
+                        [self addData:data atAddress:(address + memOffset)];
                         //NSLog(@"%@, %@", dataString, data);
+                    } else if (recordType == 2) {
+                        // Set the memory offset
+                        sscanf([dataString UTF8String], "%x", &offset);
+                        memOffset = memOffset + (offset * 16);
                     }
                 }
             }
@@ -86,7 +92,7 @@
     return self;
 }
 
--(void)addData:(NSData *)newData atAddress:(UInt16)startAddress
+-(void)addData:(NSData *)newData atAddress:(UInt32)startAddress
 {
     // Options are
     // - The data goes on the end of an existing bin
@@ -100,7 +106,7 @@
         NSMutableData *blockData = [block objectForKey:@"data"];
         int blockFinishAddress = blockStartAddress + (int)[blockData length];
         
-        if (startAddress == blockFinishAddress) {
+        if ((startAddress == blockFinishAddress) && (startAddress != 0x10000)) {
             [blockData appendData:newData];
             newDataFitted = YES;
         }
@@ -187,13 +193,18 @@
             BOOL complete = FALSE;
             
             while (!complete) {
-                int bytesLeft = endAddress - ([startAddress intValue] + currentLocation);
+                int currentAddress = ([startAddress intValue] + currentLocation);
+                int bytesLeft = endAddress - currentAddress;
+                //int bytesToExtended = 0xFFFF - ([startAddress intValue] + currentLocation);
                 if (bytesLeft > numBytes) {
                     currentLength = numBytes;
                 } else {
                     currentLength = bytesLeft;
                     complete = TRUE;
                 }
+                //if (([startAddress intValue] + currentLocation + currentLength) > 0xFFFF) {
+                //    currentLength =
+                //}
                 NSData *chunk = [blockData subdataWithRange:NSMakeRange(currentLocation, currentLength)];
                 
                 //NSLog(@"currentLocation:%d currentLength:%d", currentLocation, currentLength);

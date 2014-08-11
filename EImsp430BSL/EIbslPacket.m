@@ -109,9 +109,16 @@
 +(id)rxDataBlock:(NSData *)dataBlock FromAddress:(UInt16)address
 {
     char bytes[] = { 0x80, 0x12 };
+    NSMutableData *theDataBlock = [[NSMutableData alloc] initWithData:dataBlock];
     NSMutableData *data = [[NSMutableData alloc] initWithBytes:bytes length:sizeof(bytes)];
     
-    UInt8 n = (UInt8)([dataBlock length] + 4);
+    UInt8 n = (UInt8)([theDataBlock length] + 4);
+    if ((n % 2) == 1) { // Must have an even number of bytes
+        n = n + 1;
+        UInt8 filler = 0xFF;
+        char *fillerChar = (char *) filler;
+        [theDataBlock appendBytes:&fillerChar length:sizeof(filler)];
+    }
     char *nChar = (char *) n;
     [data appendBytes:&nChar length:1];
     [data appendBytes:&nChar length:1];
@@ -128,7 +135,7 @@
     char *zeroChar = (char *) zero;
     [data appendBytes:&zeroChar length:1];
     
-    [data appendData:dataBlock];
+    [data appendData:theDataBlock];
     
     EIbslPacket *packet = [[EIbslPacket alloc] initWithData:data];
     [packet appendChecksum];
@@ -153,6 +160,20 @@
     return packet;
 }
 
++(id)setMemoryOffset:(UInt16)offset
+{
+    char bytes[] = { 0x80, 0x21, 0x04, 0x04, 0x00, 0x00 };
+    NSMutableData *data = [[NSMutableData alloc] initWithBytes:bytes length:sizeof(bytes)];
+    
+    int len = sizeof(UInt16);
+    char* offsetBytes = (char*) offset;
+    [data appendBytes:&offsetBytes length:len];
+    
+    EIbslPacket *packet = [[EIbslPacket alloc] initWithData:data];
+    [packet appendChecksum];
+    
+    return packet;
+}
 
 -(id)initWithData:(NSData *)data
 {
@@ -234,16 +255,17 @@
 
 - (NSData *)calculateChecksum
 {
-    NSData *original = [_baseData copy];
+    NSData *original = [NSData dataWithData:_baseData]; // [_baseData copy];
+    
     NSMutableData *checksum = [[NSMutableData alloc] initWithCapacity:2];
     //NSMutableData *complete = [[NSMutableData alloc] initWithData:data];
     
     uint8_t *pBytes = (uint8_t *)[original bytes];
-    uint32_t steps = [original length]/2;
+    uint32_t steps = (uint32_t)([original length]/2);
     uint16_t ckl = pBytes[0];
     uint16_t ckh = pBytes[1];
     
-    for (uint i = 1; i<=steps; i++) {
+    for (uint i = 1; i<steps; i++) {
         ckl = ckl ^ pBytes[2*i];
         ckh = ckh ^ pBytes[(2*i)+1];
     }
@@ -257,7 +279,7 @@
 
 -(void)appendChecksum
 {
-    NSData *checksum = [self calculateChecksum];
+    NSData *checksum = [[self calculateChecksum] copy];
     [_baseData appendData:checksum];
 }
 
