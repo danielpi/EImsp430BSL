@@ -126,7 +126,8 @@
 }
 
 
-- (void) selectedSerialPortDidChange
+#pragma mark EISerialPortSelectionControllerDelegate
+- (void) selectedPortForSelectionControllerDidChange:(EISerialPortSelectionController *)controller
 {
     if (_portSelectionController.selectedPort != nil) {
         [[_portSelectionController selectedPort] setDelegate:self];
@@ -135,7 +136,7 @@
     [self updateSerialPortUI];
 }
 
-- (void) availablePortsListDidChange
+- (void) availablePortsForSelectionControllerDidChange:(EISerialPortSelectionController *)controller
 {
     [self.serialPortSelectionPopUp removeAllItems];
     
@@ -148,27 +149,51 @@
 }
 
 
-- (void) serialPortDidOpen
+#pragma mark EISerialPortDelegate
+/*
+ - (BOOL) serialPortShouldOpen:(EISerialPort *)port;
+ - (void) serialPortWillOpen:(EISerialPort *)port;
+ - (void) serialPortDidOpen:(EISerialPort *)port;
+ 
+ - (BOOL) serialPortShouldClose:(EISerialPort *)port;
+ - (void) serialPortWillClose:(EISerialPort *)port;
+ - (void) serialPortDidClose:(EISerialPort *)port;
+ 
+ - (BOOL) serialPortShouldChangeSettings:(EISerialPort *)port;
+ - (void) serialPortWillChangeSettings:(EISerialPort *)port;
+ - (void) serialPortDidChangeSettings:(EISerialPort *)port;
+ 
+ - (void) serialPort:(EISerialPort *)port experiencedAnError:(NSError *)anError;
+ 
+ - (void) serialPort:(EISerialPort *)port didReceiveData:(NSData *)data;
+ 
+ - (BOOL) serialPort:(EISerialPort *)port shouldSendData:(NSData *)data;
+ - (void) serialPort:(EISerialPort *)port willSendData:(NSData *)data;
+ - (void) serialPort:(EISerialPort *)port didSendData:(NSData *)data;
+ 
+ - (void) serialPortPinsDidChangeState:(EISerialPort *)port;
+ */
+- (void) serialPortDidOpen:(EISerialPort *)port
 {
-    if ([_bsl respondsToSelector:@selector(serialPortDidOpen)])
+    if ([_bsl respondsToSelector:@selector(serialPortDidOpen:)])
     {
-        [(EnteringBSL *)_bsl serialPortDidOpen];
+        [(EnteringBSL *)_bsl serialPortDidOpen: port];
     }
 }
 
-- (void)serialPortDidReceiveData:(NSData *)data
+- (void) serialPort:(EISerialPort *)port didReceiveData:(NSData *)data
 {
-    if ([_bsl respondsToSelector:@selector(receivedData:)])
+    if ([_bsl respondsToSelector:@selector(serialPort:didReceiveData:)])
     {
-        [(Syncing *)_bsl receivedData:data];
+        [(Syncing *)_bsl serialPort:port didReceiveData:data];
     }
 }
 
-- (void) serialPortDidSendData:(NSData *)data
+- (void) serialPort:(EISerialPort *)port didSendData:(NSData *)data
 {
-    if ([_bsl respondsToSelector:@selector(serialPortDidSendData:)])
+    if ([_bsl respondsToSelector:@selector(serialPort:didSendData:)])
     {
-        [(EnteringBSL *)_bsl serialPortDidSendData:data];
+        [(EnteringBSL *)_bsl serialPort:port didSendData:data];
     }
 }
 

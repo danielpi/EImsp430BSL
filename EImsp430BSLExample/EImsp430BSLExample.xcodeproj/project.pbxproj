@@ -30,6 +30,7 @@
 		E6C8668B181E7C18009E2A8B /* EISerialTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C86687181E7C18009E2A8B /* EISerialTextView.m */; };
 		E6C86692181E7FD9009E2A8B /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C86691181E7FD9009E2A8B /* AppController.m */; };
 		E6C86694181F8948009E2A8B /* BSLDetails.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6C86693181F8948009E2A8B /* BSLDetails.plist */; };
+		E6D8DC83199A3372003AE4C8 /* EIFirmwareContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D8DC82199A3372003AE4C8 /* EIFirmwareContainerTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		E6C86690181E7FD9009E2A8B /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		E6C86691181E7FD9009E2A8B /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		E6C86693181F8948009E2A8B /* BSLDetails.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BSLDetails.plist; sourceTree = "<group>"; };
+		E6D8DC82199A3372003AE4C8 /* EIFirmwareContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EIFirmwareContainerTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				E6C86667181E7BD8009E2A8B /* EImsp430BSLExampleTests.m */,
+				E6D8DC82199A3372003AE4C8 /* EIFirmwareContainerTests.m */,
 				E6C86662181E7BD8009E2A8B /* Supporting Files */,
 			);
 			path = EImsp430BSLExampleTests;
@@ -364,6 +367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6D8DC83199A3372003AE4C8 /* EIFirmwareContainerTests.m in Sources */,
 				E6C86668181E7BD8009E2A8B /* EImsp430BSLExampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

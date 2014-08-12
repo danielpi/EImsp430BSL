@@ -36,9 +36,5 @@ extern NSString * const EISelectedFileURLKey;
 - (IBAction)selectAHexFile:(id)sender;
 - (IBAction)loadProgram:(id)sender;
 
-- (void)availablePortsListDidChange;
-- (void)selectedSerialPortDidChange;
-- (void)serialPortDidReceiveData:(NSData *)data;
-
 
 @end
