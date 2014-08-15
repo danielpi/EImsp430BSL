@@ -181,9 +181,13 @@
     {
         container = theContainer;
         
+        // Sort the dataBlocks so that the data is in order from lowest address to highest address
+        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"address"  ascending:YES];
+        NSArray *sortedDataBlocks = [self.container.dataBlocks sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+        
         NSMutableArray *chunkedDataBlocks = [[NSMutableArray alloc] initWithCapacity:100];
         
-        for (NSDictionary *block in [self.container dataBlocks]) {
+        for (NSDictionary *block in sortedDataBlocks) {
             NSNumber *startAddress = [block objectForKey:@"address"];
             NSData *blockData = [block objectForKey:@"data"];
             int endAddress = [startAddress intValue] + (int)[blockData length];

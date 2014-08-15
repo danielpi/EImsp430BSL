@@ -258,7 +258,8 @@
     
     //NSLog(@"bsl.programFileDataArray:%@", bsl.programFileDataArray);
     BOOL intoExtendedMem = NO;
-    for (id dict in bsl.programFileDataArray) {
+    NSArray *firmwareChunks = [[bsl.firmwareContainer chunkEnumeratorWithNumberOfBytes:240] allObjects];
+    for (id dict in firmwareChunks) {
         if (([[dict objectForKey:@"address"] intValue] > 0xFFFF) && intoExtendedMem == NO) {
             EIbslPacket *memoryOffsetPacket = [EIbslPacket setMemoryOffset:1];
             [bsl.packetQueue addObject:memoryOffsetPacket];
@@ -566,6 +567,10 @@
     [blankWordData appendData:data];
     [blankWordData appendData:data];
     [erasedRamFirmware addData:blankWordData atAddress:0x1100];
+    
+    // Set the memory offset back to 0
+    EIbslPacket *memoryOffsetPacket = [EIbslPacket setMemoryOffset:0];
+    [bsl.packetQueue addObject:memoryOffsetPacket];
     
     for (id dict in [erasedRamFirmware arrayOfChunkedFirmwareWithNumberOfBytes:240]) {
         EIbslPacket *dataBlock = [EIbslPacket rxDataBlock:[dict objectForKey:@"data"]

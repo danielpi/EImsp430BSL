@@ -62,11 +62,12 @@
 @property (nonatomic, readwrite) NSString *bslVersion;
 
 @property (atomic, readwrite) NSArray *programFileDataArray;
+@property (atomic, readwrite) EIFirmwareContainer *firmwareContainer;
 
 @property (strong, readwrite) NSArray *processorDetails;
 @property (strong, readwrite) NSDictionary *connectedProcessorDetails;
 
-- (id) initWithPort: (EISerialPort *)serialPort;
+- (id) initWithPort:(EISerialPort *)serialPort;
 - (void) extractProcessorFirmwareVersions:(EIbslPacket *)response;
 - (void) cancelProgramming;
 
