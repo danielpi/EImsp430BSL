@@ -40,6 +40,7 @@
         _requestResponseState = [[RequestResponse alloc] initWithStateMachine:self];
         
         _dataFromMicroBuffer = [[NSMutableData alloc] initWithCapacity:16];;
+        _baseAddress = nil;
         
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"ProcessorDetails" ofType:@"plist"];
         _processorDetails = [NSArray arrayWithContentsOfFile:plistPath]; // This fails silently is the file isn't present
@@ -249,22 +250,26 @@
     bsl.currentTask = @"programMicro";
     
     [bsl.packetQueue removeAllObjects];
-    
     [bsl.packetQueue addObject:[EIbslPacket massErasePacket]];
     [bsl.packetQueue addObject:[EIbslPacket rxPasswordPacketIfErased]];
     [bsl.packetQueue addObject:[EIbslPacket txDataBlockFromAddress:0x0FF0 forBytes:16]];
     
+    [bsl setBaseAddress:nil];
     // Load the file
     
     //NSLog(@"bsl.programFileDataArray:%@", bsl.programFileDataArray);
-    BOOL intoExtendedMem = NO;
     NSArray *firmwareChunks = [[bsl.firmwareContainer chunkEnumeratorWithNumberOfBytes:240] allObjects];
     for (id dict in firmwareChunks) {
-        if (([[dict objectForKey:@"address"] intValue] > 0xFFFF) && intoExtendedMem == NO) {
-            EIbslPacket *memoryOffsetPacket = [EIbslPacket setMemoryOffset:1];
+        // Set the correct base address in the processor
+        uint address = [[dict objectForKey:@"address"] unsignedIntValue];
+        uint base = address >> 16;
+        if ([bsl.baseAddress isNotEqualTo:[NSNumber numberWithUnsignedInt:base]] || !bsl.baseAddress) {
+            EIbslPacket *memoryOffsetPacket = [EIbslPacket setMemoryOffset:base];
+            NSLog(@"memoryOffsetPacket:%@",memoryOffsetPacket);
             [bsl.packetQueue addObject:memoryOffsetPacket];
-            intoExtendedMem = YES;
+            [bsl setBaseAddress:[NSNumber numberWithUnsignedInt:base]];
         }
+        
         EIbslPacket *dataBlock = [EIbslPacket rxDataBlock:[dict objectForKey:@"data"]
                                               FromAddress:[[dict objectForKey:@"address"] intValue]];
         NSLog(@"dataBlock:%@",dataBlock);

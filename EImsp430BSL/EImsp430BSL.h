@@ -61,8 +61,8 @@
 @property (nonatomic, readwrite) NSString *processorVersion;
 @property (nonatomic, readwrite) NSString *bslVersion;
 
-@property (atomic, readwrite) NSArray *programFileDataArray;
 @property (atomic, readwrite) EIFirmwareContainer *firmwareContainer;
+@property (readwrite) NSNumber *baseAddress;
 
 @property (strong, readwrite) NSArray *processorDetails;
 @property (strong, readwrite) NSDictionary *connectedProcessorDetails;
