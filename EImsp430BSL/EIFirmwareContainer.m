@@ -102,8 +102,8 @@
     BOOL newDataFitted = FALSE;
     
     for (NSDictionary *block in self.dataBlocks) {
-        int blockStartAddress = [[block objectForKey:@"address"] intValue];
-        NSMutableData *blockData = [block objectForKey:@"data"];
+        int blockStartAddress = [block[@"address"] intValue];
+        NSMutableData *blockData = block[@"data"];
         int blockFinishAddress = blockStartAddress + (int)[blockData length];
         
         if ((startAddress == blockFinishAddress) && (startAddress != 0x10000)) {
@@ -113,7 +113,7 @@
     }
     
     if (!newDataFitted) {
-        NSMutableDictionary *newBlock = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSNumber alloc] initWithInt:startAddress], @"address", [[NSMutableData alloc] initWithData:newData], @"data", nil];
+        NSMutableDictionary *newBlock = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@(startAddress), @"address", [[NSMutableData alloc] initWithData:newData], @"data", nil];
         [dataBlocks addObject:newBlock];
         newDataFitted = YES;
     }
@@ -184,8 +184,8 @@
         NSMutableArray *chunkedDataBlocks = [[NSMutableArray alloc] initWithCapacity:100];
         
         for (NSDictionary *block in sortedDataBlocks) {
-            NSNumber *startAddress = [block objectForKey:@"address"];
-            NSData *blockData = [block objectForKey:@"data"];
+            NSNumber *startAddress = block[@"address"];
+            NSData *blockData = block[@"data"];
             int endAddress = [startAddress intValue] + (int)[blockData length];
             
             int currentLocation = 0;

@@ -11,7 +11,7 @@
 @interface EIbslPacket : NSObject <NSCopying>
 
 @property (nonatomic, readwrite) NSMutableData *baseData;
-@property (strong, readwrite) NSArray *cmdDetails;
+@property (copy, readwrite) NSArray *cmdDetails;
 
 +(NSArray *)packetDetails;
 

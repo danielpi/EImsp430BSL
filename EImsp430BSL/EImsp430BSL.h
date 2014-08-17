@@ -29,11 +29,11 @@
 @property (strong, readwrite) EIFirmwareContainer *firmwareContainer;
 
 // These really should be enums
-@property (atomic, readwrite) NSString *statusMessage;
-@property (atomic, readwrite) NSString *statusCode;
-@property (atomic, readwrite) NSString *bslLockStatus;
-@property (atomic, readwrite) NSString *programmingStatus;
-@property (atomic, readwrite) NSString *processorStatus;
+@property (copy, atomic, readwrite) NSString *statusMessage;
+@property (copy, atomic, readwrite) NSString *statusCode;
+@property (copy, atomic, readwrite) NSString *bslLockStatus;
+@property (copy, atomic, readwrite) NSString *programmingStatus;
+@property (copy, atomic, readwrite) NSString *processorStatus;
 
 // This should be handled by an NSProgress object
 @property (atomic, readwrite) NSNumber *progressPercentage;
@@ -41,8 +41,8 @@
 @property int packetsTotal;
 @property float progressPercentageFloat;
 
-@property (nonatomic, readwrite) NSString *processorVersion;
-@property (nonatomic, readwrite) NSString *bslVersion;
+@property (copy, nonatomic, readwrite) NSString *processorVersion;
+@property (copy, nonatomic, readwrite) NSString *bslVersion;
 
 - (id) initWithPort:(EISerialPort *)serialPort;
 - (void) extractProcessorFirmwareVersions:(EIbslPacket *)response;

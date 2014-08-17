@@ -235,7 +235,7 @@
 
     uint16_t al = pBytes[0];
     uint16_t ah = pBytes[1];
-    NSNumber *addressNumber = [NSNumber numberWithInt:(256 * ah) + al];
+    NSNumber *addressNumber = @( (256 * ah) + al );
     
     return addressNumber;
 }
@@ -378,11 +378,11 @@
         NSArray *filteredCMDDetails = [cmdDetails filteredArrayUsingPredicate:filter];
         
         if ([filteredCMDDetails count] > 0) {
-            NSDictionary *packetDetails = [filteredCMDDetails objectAtIndex:0];
-            [theDescription appendString:[NSString stringWithFormat:@"[%@: ",[packetDetails valueForKey:@"Name"]]];
-            uint8_t *pBytes = (uint8_t *)[[packetDetails valueForKey:@"CMD"] bytes];
+            NSDictionary *packetDetails = filteredCMDDetails[0];
+            [theDescription appendString:[NSString stringWithFormat:@"[%@: ", packetDetails[@"Name"]]];
+            uint8_t *pBytes = (uint8_t *)[packetDetails[@"CMD"] bytes];
             uint16_t al = pBytes[0];
-            NSNumber *CMDNumber = [NSNumber numberWithInt:al];
+            NSNumber *CMDNumber = @( al );
             
             switch ([CMDNumber intValue]) {
                 case 18: //@"RX data block"

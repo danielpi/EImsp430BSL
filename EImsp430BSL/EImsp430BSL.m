@@ -10,7 +10,7 @@
 
 
 @interface EImsp430BSL ()
-@property (strong, readwrite) NSString *currentTask;
+@property (copy, readwrite) NSString *currentTask;
 @property (nonatomic, readwrite) EIbslPacket *currentCommand;
 @property (nonatomic, readwrite) NSMutableArray *packetQueue;
 @property (nonatomic, readwrite) dispatch_queue_t serialPortQueue;
@@ -21,8 +21,8 @@
 @property (nonatomic, readonly) Syncing *syncingState;
 @property (nonatomic, readonly) RequestResponse *requestResponseState;
 
-@property (strong, readwrite) NSArray *processorDetails;
-@property (strong, readwrite) NSDictionary *connectedProcessorDetails;
+@property (copy, readwrite) NSArray *processorDetails;
+@property (copy, readwrite) NSDictionary *connectedProcessorDetails;
 
 @property (readwrite) NSNumber *baseAddress;
 @property (atomic, readwrite) NSNumber *retries;
@@ -43,7 +43,7 @@
         _currentCommand = nil;
         _packetQueue = [[NSMutableArray alloc] initWithCapacity:50];
         
-        _retries = [NSNumber numberWithInt:3];
+        _retries = @3;
         _statusCode = @"PortUntested";
         _bslLockStatus = @"Locked";
         _programmingStatus = @"programmingNothing";
@@ -95,7 +95,7 @@
         NSArray *filteredProcessorDetails = [self.processorDetails filteredArrayUsingPredicate:filter];
         
         if ([filteredProcessorDetails count] > 0) {
-            self.connectedProcessorDetails = [filteredProcessorDetails objectAtIndex:0];
+            self.connectedProcessorDetails = filteredProcessorDetails[0];
             
             NSString *processorFamilyName = [NSMutableString stringWithString:[self.connectedProcessorDetails valueForKey:@"ProcessorName"]];
             NSString *deviceName = [self.connectedProcessorDetails valueForKey:@"DeviceName"];
@@ -139,7 +139,7 @@
     EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
     
     if ([bsl.currentPort isOpen]) {
-        [bsl.currentPort setBaudRate:[NSNumber numberWithInt:19200]];
+        [bsl.currentPort setBaudRate:@19200];
         [bsl.currentPort setDataBits:EIDataBitsEight];
         [bsl.currentPort setParity:EIParityNone];
         [bsl.currentPort setStopBits:EIStopbitsOne];
@@ -284,11 +284,11 @@
         // Set the correct base address in the processor
         uint address = [[dict objectForKey:@"address"] unsignedIntValue];
         uint base = address >> 16;
-        if ([bsl.baseAddress isNotEqualTo:[NSNumber numberWithUnsignedInt:base]] || !bsl.baseAddress) {
+        if ([bsl.baseAddress isNotEqualTo:@(base)] || !bsl.baseAddress) {
             EIbslPacket *memoryOffsetPacket = [EIbslPacket setMemoryOffset:base];
             NSLog(@"memoryOffsetPacket:%@",memoryOffsetPacket);
             [bsl.packetQueue addObject:memoryOffsetPacket];
-            [bsl setBaseAddress:[NSNumber numberWithUnsignedInt:base]];
+            [bsl setBaseAddress:@(base)];
         }
         
         EIbslPacket *dataBlock = [EIbslPacket rxDataBlock:[dict objectForKey:@"data"]
@@ -328,7 +328,7 @@
     [bsl.timer invalidate];
     bsl.statusCode = @"PortOpen";
     
-    [bsl.currentPort setBaudRate:[NSNumber numberWithInt:19200]];
+    [bsl.currentPort setBaudRate:@19200];
     [bsl.currentPort setDataBits:EIDataBitsEight];
     [bsl.currentPort setParity:EIParityNone];
     [bsl.currentPort setStopBits:EIStopbitsOne];
@@ -369,9 +369,9 @@
 {
     EImsp430BSL* bsl = (EImsp430BSL*)self.machine;
     
-    if (![[bsl.currentPort baudRate] isEqualToNumber:[NSNumber numberWithInt:9600]]) {
+    if (![[bsl.currentPort baudRate] isEqualToNumber:@9600]) {
         // Change baud rate
-        [bsl.currentPort setBaudRate:[NSNumber numberWithInt:9600]];
+        [bsl.currentPort setBaudRate:@9600];
         [bsl.currentPort setDataBits:EIDataBitsEight];
         [bsl.currentPort setParity:EIParityEven];
         [bsl.currentPort setStopBits:EIStopbitsOne];
@@ -471,7 +471,7 @@
     //bsl.currentCommand = nil;
     
     if ([bsl.packetQueue count] > 0) {
-        bsl.currentCommand = [bsl.packetQueue objectAtIndex:0];
+        bsl.currentCommand = bsl.packetQueue[0];
         [bsl.packetQueue removeObjectAtIndex:0];
         
         NSLog(@"Sending:%@", bsl.currentCommand);
@@ -492,7 +492,7 @@
     
     bsl.packetsLeft = (int)[bsl.packetQueue count];
     bsl.progressPercentageFloat = (float)(bsl.packetsTotal - bsl.packetsLeft)/(float)bsl.packetsTotal;
-    bsl.progressPercentage = [NSNumber numberWithFloat:bsl.progressPercentageFloat*100];
+    bsl.progressPercentage = @(bsl.progressPercentageFloat*100);
 }
 
 - (void) serialPort:(EISerialPort *)port didReceiveData:(NSData *)data;
@@ -611,7 +611,7 @@
     bsl.packetsTotal = (int)[bsl.packetQueue count];
     bsl.packetsLeft = (int)[bsl.packetQueue count];
     bsl.progressPercentageFloat = (bsl.packetsTotal - bsl.packetsLeft)/bsl.packetsTotal;
-    bsl.progressPercentage = [NSNumber numberWithFloat:bsl.progressPercentageFloat];
+    bsl.progressPercentage = @(bsl.progressPercentageFloat);
 
 }
 

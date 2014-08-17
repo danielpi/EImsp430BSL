@@ -27,8 +27,8 @@
 
 @interface EIFirmwareChunkEnumerator : NSEnumerator
 @property (strong, readwrite) EIFirmwareContainer *container;
-@property (strong, readwrite) NSArray *chunks;
-@property (strong, readwrite) NSEnumerator *chunksEnumerator;
+@property (copy, readwrite) NSArray *chunks;
+@property (copy, readwrite) NSEnumerator *chunksEnumerator;
 
 + (NSEnumerator *) enumeratorForContainer:(EIFirmwareContainer *)theContainer numberOfBytes:(int)numBytes;
 - (id) initForContainer:(EIFirmwareContainer *)container numberOfBytes:(int)numBytes;
