@@ -8,6 +8,27 @@
 
 #import "EImsp430BSL.h"
 
+
+@interface EImsp430BSL ()
+@property (strong, readwrite) NSString *currentTask;
+@property (nonatomic, readwrite) EIbslPacket *currentCommand;
+@property (nonatomic, readwrite) NSMutableArray *packetQueue;
+@property (nonatomic, readwrite) dispatch_queue_t serialPortQueue;
+@property (atomic, readwrite) NSMutableData *dataFromMicroBuffer;
+
+@property (nonatomic, readonly) Idle *idleState;
+@property (nonatomic, readonly) EnteringBSL *enteringBSLState;
+@property (nonatomic, readonly) Syncing *syncingState;
+@property (nonatomic, readonly) RequestResponse *requestResponseState;
+
+@property (strong, readwrite) NSArray *processorDetails;
+@property (strong, readwrite) NSDictionary *connectedProcessorDetails;
+
+@property (readwrite) NSNumber *baseAddress;
+@property (atomic, readwrite) NSNumber *retries;
+@end
+
+
 @implementation EImsp430BSL
 
 - (id)init
