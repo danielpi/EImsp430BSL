@@ -170,16 +170,12 @@
 
 @implementation EIFirmwareChunkEnumerator
 
-@synthesize chunks;
-@synthesize container;
-@synthesize chunksEnumerator;
-
 -(id)initForContainer:(EIFirmwareContainer *)theContainer numberOfBytes:(int)numBytes
 {
     self = [super init];
     if (self)
     {
-        container = theContainer;
+        _container = theContainer;
         
         // Sort the dataBlocks so that the data is in order from lowest address to highest address
         NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"address"  ascending:YES];
@@ -219,8 +215,8 @@
                 
             }
         }
-        self.chunks = chunkedDataBlocks;
-        self.chunksEnumerator = [chunks objectEnumerator];
+        _chunks = chunkedDataBlocks;
+        _chunksEnumerator = [_chunks objectEnumerator];
     }
     return self;
 }
