@@ -63,6 +63,8 @@
         _dataFromMicroBuffer = [[NSMutableData alloc] initWithCapacity:16];;
         _baseAddress = nil;
         
+        _progress = [[NSProgress alloc] init];
+        
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"ProcessorDetails" ofType:@"plist"];
         _processorDetails = [NSArray arrayWithContentsOfFile:plistPath]; // This fails silently is the file isn't present
         
@@ -297,7 +299,8 @@
         [bsl.packetQueue addObject:dataBlock];
         //NSLog(@"%x %@", [[dict objectForKey:@"Address"] intValue], dataBlock);
     }
-
+    
+    [bsl.progress setTotalUnitCount:bsl.packetQueue.count];
     bsl.programmingStatus = @"programming";
     
     bsl.nextState = bsl.enteringBSLState;
@@ -476,6 +479,7 @@
         
         NSLog(@"Sending:%@", bsl.currentCommand);
         [bsl.currentPort sendData:[bsl.currentCommand data]];
+        bsl.progress.completedUnitCount++;
         if ([bsl.delegate respondsToSelector:@selector(didSendPacket:)])
         {
             [bsl.delegate didSendPacket:bsl.currentCommand];

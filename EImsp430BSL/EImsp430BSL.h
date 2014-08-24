@@ -36,6 +36,8 @@
 @property (copy, atomic, readwrite) NSString *processorStatus;
 
 // This should be handled by an NSProgress object
+//var child1Progress: NSProgress = NSProgress(totalUnitCount: totalUnitCount)
+@property (readwrite) NSProgress *progress;
 @property (atomic, readwrite) NSNumber *progressPercentage;
 @property int packetsLeft;
 @property int packetsTotal;
