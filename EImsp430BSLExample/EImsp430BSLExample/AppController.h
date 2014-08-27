@@ -17,7 +17,7 @@
 
 extern NSString * const EISelectedFileURLKey;
 
-@interface AppController : NSObject <EISerialPortSelectionDelegate, EISerialDelegate, EISerialTextViewDelegate, EImsp430BSLDelegate>
+@interface AppController : NSObject <EISerialPortSelectionDelegate, EISerialPortDelegate, EISerialTextViewDelegate, EImsp430BSLDelegate>
 
 @property (readonly, strong) EISerialPortSelectionController *portSelectionController;
 @property (readwrite, strong) EImsp430BSL *bsl;
