@@ -95,10 +95,10 @@
     NSMutableData *data = [[NSMutableData alloc] initWithBytes:bytes length:sizeof(bytes)];
     
     int len = sizeof(UInt16);
-    char* addressBytes = (char*) address;
-    [data appendBytes:&addressBytes length:len];
-    char* numBytesBytes = (char*) numBytes;
-    [data appendBytes:&numBytesBytes length:len];
+    //char* addressBytes = (char*) address;
+    [data appendBytes:&address length:len];
+    //char* numBytesBytes = (char*) numBytes;
+    [data appendBytes:&numBytes length:len];
     
     EIbslPacket *packet = [[EIbslPacket alloc] initWithData:data];
     [packet appendChecksum];
@@ -116,24 +116,24 @@
     if ((n % 2) == 1) { // Must have an even number of bytes
         n = n + 1;
         UInt8 filler = 0xFF;
-        char *fillerChar = (char *) filler;
-        [theDataBlock appendBytes:&fillerChar length:sizeof(filler)];
+        //char *fillerChar = (char *) filler;
+        [theDataBlock appendBytes:&filler length:sizeof(filler)];
     }
-    char *nChar = (char *) n;
-    [data appendBytes:&nChar length:1];
-    [data appendBytes:&nChar length:1];
+    //char *nChar = (char *) n;
+    [data appendBytes:&n length:1];
+    [data appendBytes:&n length:1];
     
     int len = sizeof(UInt16);
-    char *addressBytes = (char *) address;
-    [data appendBytes:&addressBytes length:len];
+    //char *addressBytes = (char *) address;
+    [data appendBytes:&address length:len];
     
     UInt8 nMinusFour = (UInt8)[dataBlock length];
-    char *nMinusFourChar = (char *) nMinusFour;
-    [data appendBytes:&nMinusFourChar length:1];
+    //char *nMinusFourChar = (char *) nMinusFour;
+    [data appendBytes:&nMinusFour length:1];
     
     UInt8 zero = (UInt8)0;
-    char *zeroChar = (char *) zero;
-    [data appendBytes:&zeroChar length:1];
+    //char *zeroChar = (char *) zero;
+    [data appendBytes:&zero length:1];
     
     [data appendData:theDataBlock];
     
@@ -149,10 +149,10 @@
     NSMutableData *data = [[NSMutableData alloc] initWithBytes:bytes length:sizeof(bytes)];
 
     int len = sizeof(UInt16);
-    char* addressBytes = (char*) address;
-    [data appendBytes:&addressBytes length:len];
-    char* numBytesBytes = (char*) numBytes;
-    [data appendBytes:&numBytesBytes length:len];
+    //char* addressBytes = (char*) address;
+    [data appendBytes:&address length:len];
+    //char* numBytesBytes = (char*) numBytes;
+    [data appendBytes:&numBytes length:len];
     
     EIbslPacket *packet = [[EIbslPacket alloc] initWithData:data];
     [packet appendChecksum];
@@ -166,8 +166,8 @@
     NSMutableData *data = [[NSMutableData alloc] initWithBytes:bytes length:sizeof(bytes)];
     
     int len = sizeof(UInt16);
-    char* offsetBytes = (char*) offset;
-    [data appendBytes:&offsetBytes length:len];
+    //char* offsetBytes = (char*) offset;
+    [data appendBytes:&offset length:len];
     
     EIbslPacket *packet = [[EIbslPacket alloc] initWithData:data];
     [packet appendChecksum];

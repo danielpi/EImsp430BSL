@@ -13,7 +13,7 @@
 @property (nonatomic, readwrite) NSMutableData *baseData;
 @property (copy, readwrite) NSArray *cmdDetails;
 
-+(NSArray *)packetDetails;
+//+(NSArray *)packetDetails;
 
 +(id)syncPacket;
 +(id)ackPacket;

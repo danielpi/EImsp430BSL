@@ -63,8 +63,6 @@
         _dataFromMicroBuffer = [[NSMutableData alloc] initWithCapacity:16];;
         _baseAddress = nil;
         
-        _progress = [[NSProgress alloc] init];
-        
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"ProcessorDetails" ofType:@"plist"];
         _processorDetails = [NSArray arrayWithContentsOfFile:plistPath]; // This fails silently is the file isn't present
         
@@ -271,6 +269,11 @@
     EImsp430BSL *bsl = (EImsp430BSL*)self.machine;
     
     bsl.currentTask = @"programMicro";
+    
+    //bsl.progress = nil;
+    //bsl.progress = [[NSProgress alloc] init];
+    NSProgress *progress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress] userInfo:nil];
+    [bsl setProgress:progress];
     
     [bsl.packetQueue removeAllObjects];
     [bsl.packetQueue addObject:[EIbslPacket massErasePacket]];
@@ -479,7 +482,7 @@
         
         NSLog(@"Sending:%@", bsl.currentCommand);
         [bsl.currentPort sendData:[bsl.currentCommand data]];
-        bsl.progress.completedUnitCount++;
+        //bsl.progress.completedUnitCount++;
         if ([bsl.delegate respondsToSelector:@selector(didSendPacket:)])
         {
             [bsl.delegate didSendPacket:bsl.currentCommand];
