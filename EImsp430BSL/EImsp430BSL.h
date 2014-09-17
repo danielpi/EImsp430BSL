@@ -59,6 +59,7 @@
 - (void) transmitBSLVersion;
 - (void) rxPasswordIfErased;
 - (void) blankCheck;
+- (void) prepareFirmware;
 - (void) programMicro;
 @end
 

@@ -264,16 +264,9 @@
     [bsl changeState];
 }
 
--(void)programMicro
+-(void)prepareFirmware
 {
     EImsp430BSL *bsl = (EImsp430BSL*)self.machine;
-    
-    bsl.currentTask = @"programMicro";
-    
-    //bsl.progress = nil;
-    //bsl.progress = [[NSProgress alloc] init];
-    NSProgress *progress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress] userInfo:nil];
-    [bsl setProgress:progress];
     
     [bsl.packetQueue removeAllObjects];
     [bsl.packetQueue addObject:[EIbslPacket massErasePacket]];
@@ -281,9 +274,7 @@
     [bsl.packetQueue addObject:[EIbslPacket txDataBlockFromAddress:0x0FF0 forBytes:16]];
     
     [bsl setBaseAddress:nil];
-    // Load the file
     
-    //NSLog(@"bsl.programFileDataArray:%@", bsl.programFileDataArray);
     NSArray *firmwareChunks = [[bsl.firmwareContainer chunkEnumeratorWithNumberOfBytes:240] allObjects];
     for (id dict in firmwareChunks) {
         // Set the correct base address in the processor
@@ -291,19 +282,26 @@
         uint base = address >> 16;
         if ([bsl.baseAddress isNotEqualTo:@(base)] || !bsl.baseAddress) {
             EIbslPacket *memoryOffsetPacket = [EIbslPacket setMemoryOffset:base];
-            NSLog(@"memoryOffsetPacket:%@",memoryOffsetPacket);
+            //NSLog(@"memoryOffsetPacket:%@",memoryOffsetPacket);
             [bsl.packetQueue addObject:memoryOffsetPacket];
             [bsl setBaseAddress:@(base)];
         }
         
         EIbslPacket *dataBlock = [EIbslPacket rxDataBlock:[dict objectForKey:@"data"]
                                               FromAddress:[[dict objectForKey:@"address"] intValue]];
-        NSLog(@"dataBlock:%@",dataBlock);
+       // NSLog(@"dataBlock:%@",dataBlock);
         [bsl.packetQueue addObject:dataBlock];
-        //NSLog(@"%x %@", [[dict objectForKey:@"Address"] intValue], dataBlock);
     }
+}
+
+-(void)programMicro
+{
+    EImsp430BSL *bsl = (EImsp430BSL*)self.machine;
     
-    [bsl.progress setTotalUnitCount:bsl.packetQueue.count];
+    bsl.currentTask = @"programMicro";
+    
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:bsl.packetQueue.count];
+    [bsl setProgress:progress];
     bsl.programmingStatus = @"programming";
     
     bsl.nextState = bsl.enteringBSLState;
@@ -482,7 +480,7 @@
         
         NSLog(@"Sending:%@", bsl.currentCommand);
         [bsl.currentPort sendData:[bsl.currentCommand data]];
-        //bsl.progress.completedUnitCount++;
+        bsl.progress.completedUnitCount++;
         if ([bsl.delegate respondsToSelector:@selector(didSendPacket:)])
         {
             [bsl.delegate didSendPacket:bsl.currentCommand];
