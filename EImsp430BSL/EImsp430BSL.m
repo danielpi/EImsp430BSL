@@ -208,10 +208,6 @@
     bsl.processorStatus = @"processorUncertain";
     bsl.currentTask = @"transmitBSLVersion";
     
-    for (int i = 0; i < 10; i++) {
-    //    [bsl.packetQueue addObject:[EIbslPacket massErasePacket]];
-    }
-    
     [bsl.packetQueue addObject:[EIbslPacket massErasePacket]];
     [bsl.packetQueue addObject:[EIbslPacket rxPasswordPacketIfErased]];
     
@@ -603,7 +599,9 @@
     EIbslPacket *memoryOffsetPacket = [EIbslPacket setMemoryOffset:0];
     [bsl.packetQueue addObject:memoryOffsetPacket];
     
-    for (id dict in [erasedRamFirmware arrayOfChunkedFirmwareWithNumberOfBytes:240]) {
+    NSArray *erasedRamChunks = [erasedRamFirmware arrayOfChunkedFirmwareWithNumberOfBytes:240];
+    
+    for (id dict in erasedRamChunks) {
         EIbslPacket *dataBlock = [EIbslPacket rxDataBlock:[dict objectForKey:@"data"]
                                               FromAddress:[[dict objectForKey:@"address"] intValue]];
         NSLog(@"dataBlock:%@",dataBlock);
@@ -612,7 +610,7 @@
     }
     
     [bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:ramStartAddress forBytes:ramSize]];
-    
+    [bsl.progress setTotalUnitCount:(bsl.progress.totalUnitCount + [erasedRamChunks count])];
     bsl.packetsTotal = (int)[bsl.packetQueue count];
     bsl.packetsLeft = (int)[bsl.packetQueue count];
     bsl.progressPercentageFloat = (bsl.packetsTotal - bsl.packetsLeft)/bsl.packetsTotal;
