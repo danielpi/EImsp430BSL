@@ -57,13 +57,16 @@
                     NSString *recordTypeString = [line substringWithRange:NSMakeRange(7, 2)];
                     sscanf([recordTypeString UTF8String], "%x", &recordType);
                     
-                    NSString *dataString = [line substringWithRange:NSMakeRange(9, 2*byteCount)];
+                    NSString *dataString = [line substringWithRange:NSMakeRange(9, 2 * byteCount)];
                     //Grab each two bytes, convert to data,
                     int8_t buffer[byteCount];
                     int i = 0;
                     for (i = 0; i < byteCount; i++) {
-                        NSString *twoCharacterString = [dataString substringWithRange:NSMakeRange(2*i, 2)];
-                        sscanf([twoCharacterString UTF8String], "%x", &buffer[i]);
+                        NSString *twoCharacterString = [dataString substringWithRange:NSMakeRange(2 * i, 2)];
+                        int result = sscanf([twoCharacterString UTF8String], "%hhx", &buffer[i]);
+                        if (result != 1) {
+                            NSLog(@"Something went wrong. sscanf returned %d instead of 1", result);
+                        }
                     }
                     data = [NSData dataWithBytes:buffer length:sizeof(buffer)];
                     
