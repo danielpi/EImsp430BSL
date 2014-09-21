@@ -250,10 +250,10 @@
     [bsl.packetQueue removeAllObjects];
     
     [bsl.packetQueue addObject:[EIbslPacket rxPasswordPacketIfErased]];
-    [bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:0x01000 forBytes:0xFF]]; // Information Memory Flash
+    [bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:0x1000 forBytes:0xFF]]; // Information Memory Flash
     //[bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:0x01100 forBytes:0x1FFF]]; // RAM
-    [bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:0x0FFC0 forBytes:0x3F]]; // interupt Vector
-    [bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:0x03100 forBytes:0x1CEFF]]; // Code Memory
+    [bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:0xFFC0 forBytes:0x3F]]; // interupt Vector
+    [bsl.packetQueue addObject:[EIbslPacket eraseCheckFromAddress:0x3100 forBytes:0xCEFF]]; // Code Memory
     bsl.currentTask = @"blankCheck";
     
     bsl.nextState = bsl.enteringBSLState;

@@ -49,7 +49,8 @@
                                               encoding:NSASCIIStringEncoding
                                                  error:nil];
     EIFirmwareContainer *fileContainer = [[EIFirmwareContainer alloc] initWithString:info];
-    [_bsl setProgramFileDataArray:[[fileContainer chunkEnumeratorWithNumberOfBytes:240] allObjects]];
+    [_bsl setFirmwareContainer: fileContainer];
+    //[_bsl setProgramFileDataArray:[[fileContainer chunkEnumeratorWithNumberOfBytes:240] allObjects]];
     
     [self.fileNameLabel setStringValue:[self.programFileURL lastPathComponent]];
 }
@@ -99,7 +100,8 @@
                                                          error:nil];
             EIFirmwareContainer *fileContainer = [[EIFirmwareContainer alloc] initWithString:info];
             
-            [_bsl setProgramFileDataArray:[[fileContainer chunkEnumeratorWithNumberOfBytes:240] allObjects]];
+            //[_bsl setProgramFileDataArray:[[fileContainer chunkEnumeratorWithNumberOfBytes:240] allObjects]];
+            [_bsl setFirmwareContainer: fileContainer];
             
             [self updateSerialPortUI];
             //[self.fileNameLabel setStringValue:[self.programFileURL lastPathComponent]];
@@ -118,7 +120,8 @@
                                                   encoding:NSASCIIStringEncoding
                                                      error:nil];
         EIFirmwareContainer *fileContainer = [[EIFirmwareContainer alloc] initWithString:info];
-        [_bsl setProgramFileDataArray:[[fileContainer chunkEnumeratorWithNumberOfBytes:240] allObjects]];
+        //[_bsl setProgramFileDataArray:[[fileContainer chunkEnumeratorWithNumberOfBytes:240] allObjects]];
+        [_bsl setFirmwareContainer: fileContainer];
         
         [(Idle *)_bsl programMicro];
     }
